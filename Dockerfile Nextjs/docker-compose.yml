@@ -2,11 +2,13 @@ version: '3'
 
 services:
     app:
+        container_name: hpay-report-nhnn
+        image: hpay-web-report-nhnn:latest
         build:
             context: .
             target: runner
         ports:
-            - 3000:3000
+            - 7001:3000
         environment:
             - NODE_ENV=production
             - NEXT_TELEMETRY_DISABLED=1
