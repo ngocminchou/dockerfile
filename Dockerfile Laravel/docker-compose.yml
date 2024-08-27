@@ -2,19 +2,22 @@ version: '3'
 services:
     #PHP Service
     app:
+        container_name: app-laravel
+        image: app-laravel:latest
         build:
             context: .
             dockerfile: Dockerfile
-        container_name: app_laravel
-        restart: unless-stopped
         tty: true
+        restart: always
         ports:
-            - 9099:80
+            - 7002:80
         environment:
-            SERVICE_NAME: app_laravel
+            SERVICE_NAME: app-laravel
             SERVICE_TAGS: dev
         volumes:
-            - ./:/var/www/app_laravel
+            - ./:/var/www/html
+            - /var/www/html/vendor
+        entrypoint: ["/usr/local/bin/start.sh"]
         networks:
             - app-network
 #Docker Networks

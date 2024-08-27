@@ -26,9 +26,6 @@ WORKDIR /var/www/html
 
 # copy necessary files and change permissions
 COPY . .
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage \
-    && chmod -R 775 /var/www/html/bootstrap/cache
 
 # install php and node.js dependencies
 RUN composer install --no-dev --prefer-dist
@@ -73,9 +70,13 @@ COPY --from=build /var/www/html /var/www/html
 COPY ./deploy/nginx.conf /etc/nginx/http.d/default.conf
 COPY ./deploy/php.ini "$PHP_INI_DIR/conf.d/app.ini"
 
+COPY start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
 WORKDIR /var/www/html
 
 # add all folders where files are being stored that require persistence. if needed, otherwise remove this line.
 # VOLUME ["/var/www/html/storage/app"]
+# CMD ["sh", "-c", "nginx && php-fpm"]
 
-CMD ["sh", "-c", "nginx && php-fpm"]
+
